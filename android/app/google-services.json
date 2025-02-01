@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "85198966019",
+    "project_id": "crowdfunding-sdsi-ecole42",
+    "storage_bucket": "crowdfunding-sdsi-ecole42.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85198966019:android:d0d8fdbc545f420a10ad36",
+        "android_client_info": {
+          "package_name": "com.project10"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE9tuhnoVFumP6OOZOnKmxD-OMQ60BoTM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
