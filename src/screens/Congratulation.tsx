@@ -8,7 +8,7 @@ import {
   Text,
 } from 'react-native';
 import React, {useEffect} from 'react';
-import Modal from 'react-native-modal';
+
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../App';
 import logosdsi from '../assets/images/dcc.png';

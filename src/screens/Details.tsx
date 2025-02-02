@@ -2,17 +2,14 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   Image,
   TextInput,
-  Touchable,
   TouchableOpacity,
   ScrollView,
   Alert,
   StatusBar,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Modal from 'react-native-modal';
 import firestore from '@react-native-firebase/firestore';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
