@@ -15,6 +15,7 @@ import firestore from '@react-native-firebase/firestore';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../App';
 import logo from '../assets/images/D2C-removebg-preview.png';
+import recap_illustration from '../assets/images/recap_illustration.png';
 import {SelectList} from 'react-native-dropdown-select-list';
 
 const companies = [
@@ -135,19 +136,19 @@ const Details = ({route, navigation}: DetailsProps) => {
       <View style={{elevation: 3, shadowOffset: {width: 1, height: 1}}}>
         <Image
           style={{
-            height: 150,
+            height: 200,
             width: 200,
             borderRadius: 10,
             padding: 18,
-            backgroundColor: 'white',
+            // backgroundColor: 'white',
             marginBottom: 15,
           }}
-          source={logo}
+          source={recap_illustration}
         />
       </View>
-      <Text style={styles.headingText}>
+      {/* <Text style={styles.headingText}>
         Verifier une derniere fois avant de valider
-      </Text>
+      </Text> */}
       <View style={styles.inputWrapper}>
         <Text style={styles.labelText}>👨🏻‍💼</Text>
         <TextInput

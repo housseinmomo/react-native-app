@@ -27,6 +27,7 @@ const data = [
   {key: '7', value: 'MENFOP'},
 ];
 import logo from '../assets/images/D2C-removebg-preview.png';
+import illustration from '../assets/images/register_illustration.png';
 
 const Register = ({navigation}: RegisterProps) => {
   const [name, setName] = useState('');
@@ -36,7 +37,7 @@ const Register = ({navigation}: RegisterProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{elevation: 3, shadowOffset: {width: 1, height: 1}}}>
-        <Image
+        {/* <Image
           style={{
             height: 150,
             width: 200,
@@ -46,9 +47,20 @@ const Register = ({navigation}: RegisterProps) => {
             marginTop: 10,
           }}
           source={logo}
+        /> */}
+        <Image
+          style={{
+            height: 200,
+            width: 200,
+            borderRadius: 10,
+            padding: 18,
+            // backgroundColor: 'white',
+            marginTop: 10,
+          }}
+          source={illustration}
         />
       </View>
-      <Text style={styles.headingText}>Saisir les informations ci-dessous</Text>
+      {/* <Text style={styles.headingText}>Saisir les informations ci-dessous</Text> */}
       {errors && <Text style={styles.errorText}>{errors}</Text>}
       <TextInput
         style={styles.input}

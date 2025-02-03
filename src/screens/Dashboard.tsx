@@ -25,6 +25,7 @@ import FileViewer from 'react-native-file-viewer';
 
 // import logo from '../assets/images/dcc.png';
 import logo from '../assets/images/D2C-removebg-preview.png';
+import errorImage from '../assets/images/errors/nodata.png';
 
 import {RadioGroup} from 'react-native-radio-buttons-group';
 import {SelectList} from 'react-native-dropdown-select-list';
@@ -354,12 +355,14 @@ const Dashboard = ({navigation}: DashboardProps) => {
         }}>
         <Image
           style={{
-            height: 120,
-            width: 200,
+            height: 100,
+            width: 150,
             borderRadius: 10,
             padding: 18,
             backgroundColor: 'white',
             marginTop: 10,
+            borderWidth: 1,
+            borderColor: '#34495e',
           }}
           source={logo}
         />
@@ -405,7 +408,11 @@ const Dashboard = ({navigation}: DashboardProps) => {
             borderRadius: 8,
           }}
           onPress={() => {
+            // Vider la bar de recherche
             // TODO: Navigation Home
+            if (searchText !== '') {
+              setTimeout(() => setSearchText(''), 1000);
+            }
             navigation.push('Register');
           }}>
           <Text style={{color: 'white'}}>Nouvelle prospection</Text>
@@ -617,109 +624,154 @@ const Dashboard = ({navigation}: DashboardProps) => {
         </View>
       ) : null}
       {searchText !== '' && searchText.length > 1 ? (
-        <FlatList
-          style={styles.flatListComponent}
-          data={results}
-          renderItem={({item}) => (
-            <View style={styles.card}>
-              <Image
-                source={{
-                  uri: `https://ui-avatars.com/api/?name=${
-                    item.name.split(' ').slice(0, 2)[0]
-                  }+${
-                    item.name.split(' ').slice(0, 2)[1]
-                  }&background=random&size=120&font-size=0.33&bold=true`,
-                }}
-                style={styles.image}
-              />
-              <View style={styles.info}>
-                <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.details}>💼 {item.company}</Text>
-                {item.engagement_level === 'Bronze' ? (
+        results.length == 0 ? (
+          // checkpoint
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              elevation: 3,
+              shadowOffset: {height: 1, width: 1},
+              marginTop: 10,
+            }}>
+            <Image
+              source={errorImage}
+              style={{
+                height: 250,
+                width: 300,
+                marginBottom: 10,
+                borderWidth: 0.2,
+                borderColor: '#34495e',
+                borderRadius: 8,
+              }}
+            />
+            <View>
+              <TouchableOpacity
+                style={{
+                  height: 50,
+                  width: 300,
+                  borderColor: '#34495e',
+                  backgroundColor: 'white',
+                  borderWidth: 1,
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{fontWeight: '600', fontSize: 16, color: '#34495e'}}>
+                  {searchText} est introuvable
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <FlatList
+            style={styles.flatListComponent}
+            data={results}
+            renderItem={({item}) => (
+              <View style={styles.card}>
+                <Image
+                  source={{
+                    uri: `https://ui-avatars.com/api/?name=${
+                      item.name.split(' ').slice(0, 2)[0]
+                    }+${
+                      item.name.split(' ').slice(0, 2)[1]
+                    }&background=random&size=120&font-size=0.33&bold=true`,
+                  }}
+                  style={styles.image}
+                />
+                <View style={styles.info}>
+                  <Text style={styles.name}>{item.name}</Text>
+                  <Text style={styles.details}>💼 {item.company}</Text>
+                  {item.engagement_level === 'Bronze' ? (
+                    <Text style={styles.infoProscription}>
+                      🥉 {item.engagement_level}
+                    </Text>
+                  ) : null}
+                  {item.engagement_level === 'Silver' ? (
+                    <Text style={styles.infoProscription}>
+                      🥈 {item.engagement_level}
+                    </Text>
+                  ) : null}
+                  {item.engagement_level === 'Gold' ? (
+                    <Text style={styles.infoProscription}>
+                      🥇 {item.engagement_level}
+                    </Text>
+                  ) : null}
+                  {item.engagement_level === 'Platinum' ? (
+                    <Text style={styles.infoProscription}>
+                      💠 {item.engagement_level}
+                    </Text>
+                  ) : null}
+                  {item.engagement_level === 'Diamond' ? (
+                    <Text style={styles.infoProscription}>
+                      💎 {item.engagement_level}
+                    </Text>
+                  ) : null}
                   <Text style={styles.infoProscription}>
-                    🥉 {item.engagement_level}
+                    🗓️ {item.duration}
                   </Text>
-                ) : null}
-                {item.engagement_level === 'Silver' ? (
-                  <Text style={styles.infoProscription}>
-                    🥈 {item.engagement_level}
-                  </Text>
-                ) : null}
-                {item.engagement_level === 'Gold' ? (
-                  <Text style={styles.infoProscription}>
-                    🥇 {item.engagement_level}
-                  </Text>
-                ) : null}
-                {item.engagement_level === 'Platinum' ? (
-                  <Text style={styles.infoProscription}>
-                    💠 {item.engagement_level}
-                  </Text>
-                ) : null}
-                {item.engagement_level === 'Diamond' ? (
-                  <Text style={styles.infoProscription}>
-                    💎 {item.engagement_level}
-                  </Text>
-                ) : null}
-                <Text style={styles.infoProscription}>🗓️ {item.duration}</Text>
-                {/* <Text style={styles.infoProscription}> */}
-                {/* ✅ :{' '} */}
-                {/* {item.createdAt
+                  {/* <Text style={styles.infoProscription}> */}
+                  {/* ✅ :{' '} */}
+                  {/* {item.createdAt
                 ? createdAt.toDate().toLocaleString()
                 : 'Date inconnue'} */}
-                {/* </Text> */}
-                <TouchableOpacity
-                  style={styles.buttonUpdate}
-                  onPress={() => {
-                    setIsModalVisible(true);
-                    setProspectToUpdate(item);
-                    console.log(item);
-                  }}>
-                  <Text style={styles.buttonTextUpdate}>Editer</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.buttonDelete}
-                  onPress={() => {
-                    Alert.alert(
-                      'Confirmation',
-                      `Êtes vous sûres de vouloir supprimer definitivement ${item.name} dans liste des prospections`,
-                      [
-                        {
-                          text: 'Oui',
-                          style: 'cancel',
-                          onPress: async () => {
-                            const documentID = item.key;
-                            console.log(documentID);
-                            try {
-                              await firestore()
-                                .collection('prospections')
-                                .doc(documentID)
-                                .delete();
-                              console.log('Document supprimé avec succès !');
-                              setSearchText('');
-                              navigation.popTo('Dashboard');
-                            } catch (error) {
-                              console.error(
-                                'Erreur lors de la suppression :',
-                                error,
-                              );
-                            }
+                  {/* </Text> */}
+                  <TouchableOpacity
+                    style={styles.buttonUpdate}
+                    onPress={() => {
+                      setIsModalVisible(true);
+                      setProspectToUpdate(item);
+                      console.log(item);
+                    }}>
+                    <Text style={styles.buttonTextUpdate}>Editer</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.buttonDelete}
+                    onPress={() => {
+                      Alert.alert(
+                        'Confirmation',
+                        `Êtes vous sûres de vouloir supprimer definitivement ${item.name} dans liste des prospections`,
+                        [
+                          {
+                            text: 'Oui',
+                            style: 'cancel',
+                            onPress: async () => {
+                              const documentID = item.key;
+                              console.log(documentID);
+                              try {
+                                await firestore()
+                                  .collection('prospections')
+                                  .doc(documentID)
+                                  .delete();
+                                console.log('Document supprimé avec succès !');
+                                setSearchText('');
+                                navigation.popTo('Dashboard');
+                              } catch (error) {
+                                console.error(
+                                  'Erreur lors de la suppression :',
+                                  error,
+                                );
+                              }
+                            },
                           },
-                        },
-                        {
-                          text: 'Non',
-                          style: 'destructive',
-                        },
-                      ],
-                    );
-                  }}>
-                  <Text style={styles.buttonTextDelete}>Supprimer</Text>
-                </TouchableOpacity>
+                          {
+                            text: 'Non',
+                            style: 'destructive',
+                          },
+                        ],
+                      );
+                    }}>
+                    <Text style={styles.buttonTextDelete}>Supprimer</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          )}
-          // keyExtractor={prospection => prospection.key}
-          contentContainerStyle={styles.container}
-        />
+            )}
+            // keyExtractor={prospection => prospection.key}
+            contentContainerStyle={styles.container}
+          />
+        )
       ) : (
         <FlatList
           style={styles.flatListComponent}

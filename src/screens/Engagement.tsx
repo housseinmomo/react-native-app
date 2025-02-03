@@ -31,6 +31,7 @@ const duration_level = [
   {key: '5', value: '16 - 24 mois'},
 ];
 import logo from '../assets/images/D2C-removebg-preview.png';
+import niveau_engagement_illustration from '../assets/images/niveau_engagement_illustration.png';
 
 const Engagement = ({route, navigation}: EngagementProps) => {
   const {person_name, company} = route.params;
@@ -45,17 +46,17 @@ const Engagement = ({route, navigation}: EngagementProps) => {
       <View style={{elevation: 3, shadowOffset: {width: 1, height: 1}}}>
         <Image
           style={{
-            height: 150,
+            height: 200,
             width: 200,
             borderRadius: 10,
             padding: 18,
-            backgroundColor: 'white',
+            // backgroundColor: 'white',
             marginTop: 10,
           }}
-          source={logo}
+          source={niveau_engagement_illustration}
         />
       </View>
-      <Text style={styles.headingText}>Determiner vos engagement</Text>
+      {/* <Text style={styles.headingText}>Determiner vos engagement</Text> */}
       {errors && <Text style={styles.errorText}>{errors}</Text>}
       <View style={{marginBottom: 30}}>
         <SelectList

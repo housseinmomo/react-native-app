@@ -62,10 +62,10 @@ const App = () => {
           name="Register"
           component={Register}
           options={{
-            title: '1/4',
+            title: 'Contributeur du projet ',
             headerTitleStyle: {
               fontWeight: 'bold',
-              fontSize: 16,
+              fontSize: 18,
               color: '#34495e',
             },
             // headerBackVisible: false,
@@ -80,10 +80,10 @@ const App = () => {
           name="Engagement"
           component={Engagement}
           options={{
-            title: '2/4',
+            title: "Niveau d'engagement",
             headerTitleStyle: {
               fontWeight: 'bold',
-              fontSize: 16,
+              fontSize: 18,
               color: '#34495e',
             },
             headerTitleAlign: 'center',
@@ -95,10 +95,10 @@ const App = () => {
           name="Details"
           component={Details}
           options={{
-            title: '3/4',
+            title: 'Récapitulatif',
             headerTitleStyle: {
               fontWeight: 'bold',
-              fontSize: 16,
+              fontSize: 18,
               color: '#34495e',
             },
             headerTitleAlign: 'center',
@@ -110,10 +110,10 @@ const App = () => {
           name="Congratulation"
           component={Congratulation}
           options={{
-            title: '4/4',
+            title: 'Remerciement',
             headerTitleStyle: {
               fontWeight: 'bold',
-              fontSize: 16,
+              fontSize: 18,
               color: '#34495e',
             },
             headerTitleAlign: 'center',
