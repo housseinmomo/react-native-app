@@ -50,7 +50,7 @@ const App = () => {
             title: 'SDSI - Crowdfunding - Ecole 42',
             headerTitleStyle: {
               fontWeight: 'bold',
-              fontSize: 16,
+              fontSize: 18,
               color: '#34495e',
             },
             headerTitleAlign: 'center',

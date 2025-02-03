@@ -1,15 +1,13 @@
 import {
   Text,
   StyleSheet,
-  SafeAreaView,
   Image,
   TouchableOpacity,
   StatusBar,
-  ImageBackground,
-  Button,
   View,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
 // NativeStackScreenProps : permet de typer les propriétés (props) des écrans dans une application React Native avec TypeScript
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -39,7 +37,7 @@ const Home = ({navigation}: HomeProps) => {
               height: 100,
               width: 150,
               borderRadius: 10,
-              borderWidth: 1,
+              borderWidth: 0.1,
               borderColor: '#34495e',
               backgroundColor: 'white',
             }}
@@ -62,6 +60,7 @@ const Home = ({navigation}: HomeProps) => {
           onPress={() => {
             navigation.popTo('Dashboard');
             // navigation.push('Dashboard');
+            // navigation.navigate('Dashboard');
           }}>
           <Text style={styles.btnText}>Consulter votre dashboard</Text>
         </TouchableOpacity>
@@ -90,6 +89,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 4,
     elevation: 1,
+    shadowOffset: {height: 1, width: 1},
   },
 
   primaryBtn: {

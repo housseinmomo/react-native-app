@@ -27,7 +27,6 @@ import FileViewer from 'react-native-file-viewer';
 import logo from '../assets/images/D2C-removebg-preview.png';
 import errorImage from '../assets/images/errors/nodata.png';
 
-import {RadioGroup} from 'react-native-radio-buttons-group';
 import {SelectList} from 'react-native-dropdown-select-list';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Share from 'react-native-share';
@@ -361,7 +360,7 @@ const Dashboard = ({navigation}: DashboardProps) => {
             padding: 18,
             backgroundColor: 'white',
             marginTop: 10,
-            borderWidth: 1,
+            borderWidth: 0.1,
             borderColor: '#34495e',
           }}
           source={logo}
@@ -630,7 +629,6 @@ const Dashboard = ({navigation}: DashboardProps) => {
             style={{
               flex: 1,
               alignItems: 'center',
-              justifyContent: 'space-between',
               elevation: 3,
               shadowOffset: {height: 1, width: 1},
               marginTop: 10,
@@ -646,22 +644,24 @@ const Dashboard = ({navigation}: DashboardProps) => {
                 borderRadius: 8,
               }}
             />
-            <View>
-              <TouchableOpacity
-                style={{
-                  height: 50,
-                  width: 300,
-                  borderColor: '#34495e',
-                  backgroundColor: 'white',
-                  borderWidth: 1,
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Text
-                  style={{fontWeight: '600', fontSize: 16, color: '#34495e'}}>
-                  {searchText} est introuvable
-                </Text>
+            <View style={{padding: 5}}>
+              <TouchableOpacity>
+                <View>
+                  <Text
+                    style={{
+                      height: 40,
+                      width: 280,
+                      padding: 10,
+                      fontWeight: '600',
+                      fontSize: 16,
+                      color: 'white',
+                      backgroundColor: '#34495e',
+                      borderRadius: 8,
+                      textAlign: 'center',
+                    }}>
+                    {searchText} est introuvable
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
           </View>
