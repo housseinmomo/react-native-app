@@ -30,7 +30,7 @@ const duration_level = [
   {key: '4', value: '12 - 15 mois'},
   {key: '5', value: '16 - 24 mois'},
 ];
-import logosdsi from '../assets/images/dcc.png';
+import logo from '../assets/images/D2C-removebg-preview.png';
 
 const Engagement = ({route, navigation}: EngagementProps) => {
   const {person_name, company} = route.params;
@@ -42,16 +42,19 @@ const Engagement = ({route, navigation}: EngagementProps) => {
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={'#34495e'} />
 
-      <Image
-        style={{
-          height: 120,
-          width: 200,
-          marginBottom: 10,
-          borderRadius: 10,
-          elevation: 3,
-        }}
-        source={logosdsi}
-      />
+      <View style={{elevation: 3, shadowOffset: {width: 1, height: 1}}}>
+        <Image
+          style={{
+            height: 150,
+            width: 200,
+            borderRadius: 10,
+            padding: 18,
+            backgroundColor: 'white',
+            marginTop: 10,
+          }}
+          source={logo}
+        />
+      </View>
       <Text style={styles.headingText}>Determiner vos engagement</Text>
       {errors && <Text style={styles.errorText}>{errors}</Text>}
       <View style={{marginBottom: 30}}>

@@ -18,7 +18,8 @@ import {RootStackParamList} from '../App';
 type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 // import logosdsi from '../assets/images/logo.png';
-import logo from '../assets/images/dcc.png';
+import logo from '../assets/images/D2C-removebg-preview.png';
+// import logo from '../assets/images/DD.jpg';
 
 const Home = ({navigation}: HomeProps) => {
   return (
@@ -30,17 +31,20 @@ const Home = ({navigation}: HomeProps) => {
         }}
         style={{width: '100%', height: '100%'}}>
         <View style={styles.container}>
-          <Image
-            source={logo}
-            style={{
-              height: 100,
-              width: 200,
-              borderRadius: 8,
-              borderWidth: 2,
-              borderColor: 'white',
-              padding: 10,
-            }}
-          />
+          <View style={{elevation: 3, shadowOffset: {heigh: 1, width: 1}}}>
+            <Image
+              source={logo}
+              style={{
+                height: 150,
+                width: 200,
+                borderRadius: 8,
+                borderWidth: 2,
+                borderColor: 'white',
+                padding: 18,
+                backgroundColor: 'white',
+              }}
+            />
+          </View>
           <Text style={styles.smallText}>
             Bienvenue sur la plateforme de levée de fonds de l’École 42, où
             chaque contribution aide à coder l’avenir !

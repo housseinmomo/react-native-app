@@ -23,7 +23,9 @@ type DashboardProps = NativeStackScreenProps<RootStackParamList, 'Dashboard'>;
 
 import FileViewer from 'react-native-file-viewer';
 
-import logo from '../assets/images/dcc.png';
+// import logo from '../assets/images/dcc.png';
+import logo from '../assets/images/D2C-removebg-preview.png';
+
 import {RadioGroup} from 'react-native-radio-buttons-group';
 import {SelectList} from 'react-native-dropdown-select-list';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
@@ -352,10 +354,12 @@ const Dashboard = ({navigation}: DashboardProps) => {
         }}>
         <Image
           style={{
-            height: 100,
+            height: 120,
             width: 200,
-            padding: 10,
             borderRadius: 10,
+            padding: 18,
+            backgroundColor: 'white',
+            marginTop: 10,
           }}
           source={logo}
         />

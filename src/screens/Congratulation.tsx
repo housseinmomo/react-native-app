@@ -11,7 +11,7 @@ import React, {useEffect} from 'react';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../App';
-import logosdsi from '../assets/images/dcc.png';
+import logo from '../assets/images/D2C-removebg-preview.png';
 
 type CongratulationProps = NativeStackScreenProps<
   RootStackParamList,
@@ -38,16 +38,19 @@ const Congratulation = ({navigation}: CongratulationProps) => {
           },
           styles.container,
         ]}>
-        <Image
-          source={logosdsi}
-          style={{
-            height: 150,
-            width: 200,
-            borderRadius: 15,
-            borderWidth: 1,
-            borderColor: 'white',
-          }}
-        />
+        <View style={{elevation: 3, shadowOffset: {width: 1, height: 1}}}>
+          <Image
+            style={{
+              height: 150,
+              width: 200,
+              borderRadius: 10,
+              padding: 18,
+              backgroundColor: 'white',
+              marginBottom: 15,
+            }}
+            source={logo}
+          />
+        </View>
         <Text style={styles.headingText}>
           Merci Beaucoup, toute l'equipe de SDSI vous remercie pour votre
           participation dans ce projet.

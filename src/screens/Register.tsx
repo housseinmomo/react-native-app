@@ -26,7 +26,7 @@ const data = [
   {key: '6', value: 'LANA'},
   {key: '7', value: 'MENFOP'},
 ];
-import logosdsi from '../assets/images/dcc.png';
+import logo from '../assets/images/D2C-removebg-preview.png';
 
 const Register = ({navigation}: RegisterProps) => {
   const [name, setName] = useState('');
@@ -35,16 +35,19 @@ const Register = ({navigation}: RegisterProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image
-        style={{
-          height: 120,
-          width: 200,
-          marginBottom: 10,
-          borderRadius: 10,
-          elevation: 3,
-        }}
-        source={logosdsi}
-      />
+      <View style={{elevation: 3, shadowOffset: {width: 1, height: 1}}}>
+        <Image
+          style={{
+            height: 150,
+            width: 200,
+            borderRadius: 10,
+            padding: 18,
+            backgroundColor: 'white',
+            marginTop: 10,
+          }}
+          source={logo}
+        />
+      </View>
       <Text style={styles.headingText}>Saisir les informations ci-dessous</Text>
       {errors && <Text style={styles.errorText}>{errors}</Text>}
       <TextInput

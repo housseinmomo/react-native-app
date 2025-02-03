@@ -14,7 +14,7 @@ import firestore from '@react-native-firebase/firestore';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../App';
-import logosdsi from '../assets/images/dcc.png';
+import logo from '../assets/images/D2C-removebg-preview.png';
 import {SelectList} from 'react-native-dropdown-select-list';
 
 const companies = [
@@ -132,16 +132,19 @@ const Details = ({route, navigation}: DetailsProps) => {
           </View>
         </Modal> */}
       {/* </View> */}
-      <Image
-        style={{
-          height: 120,
-          width: 200,
-          marginBottom: 20,
-          borderRadius: 10,
-          elevation: 3,
-        }}
-        source={logosdsi}
-      />
+      <View style={{elevation: 3, shadowOffset: {width: 1, height: 1}}}>
+        <Image
+          style={{
+            height: 150,
+            width: 200,
+            borderRadius: 10,
+            padding: 18,
+            backgroundColor: 'white',
+            marginBottom: 15,
+          }}
+          source={logo}
+        />
+      </View>
       <Text style={styles.headingText}>
         Verifier une derniere fois avant de valider
       </Text>
