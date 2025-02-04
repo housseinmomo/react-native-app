@@ -12,6 +12,7 @@ import {
   Alert,
   Platform,
   PermissionsAndroid,
+  BackHandler,
 } from 'react-native';
 import firestore, {getDocs} from '@react-native-firebase/firestore';
 import Modal from 'react-native-modal';
@@ -402,6 +403,7 @@ const Dashboard = ({navigation}: DashboardProps) => {
         <TouchableOpacity
           style={{
             backgroundColor: '#34495e',
+            width: 150,
             height: 35,
             padding: 8,
             borderRadius: 8,
@@ -414,13 +416,16 @@ const Dashboard = ({navigation}: DashboardProps) => {
             }
             navigation.push('Register');
           }}>
-          <Text style={{color: 'white'}}>Nouvelle prospection</Text>
+          <Text style={{color: 'white', textAlign: 'center'}}>
+            Nouvelle prospection
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
             backgroundColor: 'white',
             borderColor: '#34495e',
             borderWidth: 1,
+            width: 150,
             height: 35,
             padding: 8,
             borderRadius: 8,
@@ -455,7 +460,7 @@ const Dashboard = ({navigation}: DashboardProps) => {
                             }
                               table { width: 100%; border-collapse: collapse; }
                               th {background-color: #34495e; color: white }
-                              th, td { border: 1px solid black; padding: 8px; text-align: center; font-size: 18; font-weight: bold }
+                              th, td { border: 1px solid black; padding: 8px; font-size: 18; font-weight: bold }
                               .info{
                               font-size: 18; font-weight: bold; color: #34495e
                               }
@@ -526,10 +531,58 @@ const Dashboard = ({navigation}: DashboardProps) => {
           {isLoadingPdfFile ? (
             <ActivityIndicator color="#34495e" size="small" />
           ) : (
-            <Text style={{color: '#34495e', fontWeight: 'bold'}}>
+            <Text
+              style={{
+                color: '#34495e',
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}>
               Exporter en PDF
             </Text>
           )}
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          marginTop: 20,
+          marginBottom: 30,
+        }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'white',
+            width: 150,
+            height: 35,
+            padding: 8,
+            borderRadius: 8,
+            borderWidth: 1,
+            borderColor: '#34495e',
+          }}
+          onPress={() =>
+            Alert.alert("Fonctionnalites en cours d'implementation")
+          }>
+          <Text
+            style={{textAlign: 'center', color: '#34495e', fontWeight: 'bold'}}>
+            Filtrer les prospects
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#34495e',
+            width: 150,
+            height: 35,
+            padding: 8,
+            borderRadius: 8,
+          }}
+          onPress={() =>
+            Alert.alert("Fonctionnalite en cours d'implementation")
+          }>
+          <Text style={{color: 'white', textAlign: 'center'}}>
+            Accéder aux charts
+          </Text>
         </TouchableOpacity>
       </View>
       <View
@@ -636,7 +689,7 @@ const Dashboard = ({navigation}: DashboardProps) => {
             <Image
               source={errorImage}
               style={{
-                height: 250,
+                height: 200,
                 width: 300,
                 marginBottom: 10,
                 borderWidth: 0.2,
@@ -654,10 +707,13 @@ const Dashboard = ({navigation}: DashboardProps) => {
                       padding: 10,
                       fontWeight: '600',
                       fontSize: 16,
-                      color: 'white',
-                      backgroundColor: '#34495e',
+                      color: '#34495e',
+                      backgroundColor: 'white',
                       borderRadius: 8,
                       textAlign: 'center',
+                      borderWidth: 0.3,
+                      borderColor: '#34495e',
+                      elevation: 1,
                     }}>
                     {searchText} est introuvable
                   </Text>

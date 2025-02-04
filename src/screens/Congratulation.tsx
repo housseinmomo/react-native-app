@@ -12,7 +12,7 @@ import React, {useEffect} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../App';
 import logo from '../assets/images/D2C-removebg-preview.png';
-import congrat_illustration from '../assets/images/congrat_illustration.png';
+import congrat_illustration from '../assets/images/congrat_illustration3.png';
 
 type CongratulationProps = NativeStackScreenProps<
   RootStackParamList,
@@ -39,15 +39,18 @@ const Congratulation = ({navigation}: CongratulationProps) => {
           },
           styles.container,
         ]}>
-        <View style={{elevation: 3, shadowOffset: {width: 1, height: 1}}}>
+        <View
+          style={{
+            elevation: 2,
+            elevation: 3,
+            shadowOffset: {width: 1, height: 1},
+          }}>
           <Image
             style={{
               height: 250,
               width: 250,
               borderRadius: 10,
-              padding: 18,
-              // backgroundColor: 'white',
-              marginBottom: 15,
+              padding: 15,
             }}
             source={congrat_illustration}
           />

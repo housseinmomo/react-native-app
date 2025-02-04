@@ -1,8 +1,9 @@
-import React, {Children, useEffect} from 'react';
+import React, {Children, useEffect, useState} from 'react';
 
 // Navigation
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import BootSplash from 'react-native-bootsplash';
 
 // Screens
 import Home from './screens/Home';
@@ -12,6 +13,7 @@ import Engagement from './screens/Engagement';
 import Congratulation from './screens/Congratulation';
 import Dashboard from './screens/Dashboard';
 import {ActivityIndicator} from 'react-native';
+import Splashscreen from './screens/Splashscreen';
 // import SplashScreen from 'react-native-splash-screen';
 
 // On predefinie la liste des ecrans ainsi que leurs props en amont avec typescript
@@ -35,11 +37,12 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     return <ActivityIndicator size={'large'} color={'yellow'} />;
-  //   }, 2000);
-  // }, []);
+  const [isAppReady, setIsAppReady] = useState(false);
+
+  if (isAppReady === false) {
+    return <Splashscreen onFinish={() => setIsAppReady(true)} />;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">

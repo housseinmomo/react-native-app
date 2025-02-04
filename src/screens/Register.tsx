@@ -62,6 +62,10 @@ const Register = ({navigation}: RegisterProps) => {
       </View>
       {/* <Text style={styles.headingText}>Saisir les informations ci-dessous</Text> */}
       {errors && <Text style={styles.errorText}>{errors}</Text>}
+      {/* {errors &&
+        Alert.alert('Ce champ est obligatoire', errors, [
+          {text: "C'est compris", style: 'cancel'},
+        ])} */}
       <TextInput
         style={styles.input}
         onChangeText={setName}
