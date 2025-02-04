@@ -17,7 +17,7 @@ import {RootStackParamList} from '../App';
 import logo from '../assets/images/D2C-removebg-preview.png';
 import recap_illustration from '../assets/images/recap_illustration.png';
 import {SelectList} from 'react-native-dropdown-select-list';
-
+import NetInfo from '@react-native-community/netinfo';
 const companies = [
   {key: '1', value: 'Telecom'},
   {key: '2', value: 'DMP'},
@@ -53,6 +53,21 @@ const Details = ({route, navigation}: DetailsProps) => {
   const [companyName, setCompanyName] = useState(company);
   const [engagementLevel, setEngagementLevel] = useState(engagement_level);
   const [durationOfEngagement, setDurationOfEngagement] = useState(duration);
+
+  const [isConnected, setIsConnected] = useState(null);
+
+  // Check Connectivity
+  useEffect(() => {
+    const checkConnectivity = NetInfo.addEventListener(state => {
+      console.log('Connection type', state.type);
+      console.log('Is connected?', state.isConnected);
+      setIsConnected(Boolean(state.isConnected));
+    });
+
+    return () => {
+      checkConnectivity();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -247,20 +262,26 @@ const Details = ({route, navigation}: DetailsProps) => {
         <TouchableOpacity
           style={[styles.btn, styles.btnPrimary]}
           onPress={async () => {
-            // TODO : Push to firebase
-            try {
-              await firestore().collection('prospections').add({
-                name: name,
-                company: companyName,
-                engagement_level: engagementLevel,
-                duration: durationOfEngagement,
-                createdAt: firestore.FieldValue.serverTimestamp(),
-              });
-              // TODO : Redirection vers congrat
-              console.log('Document ajouté avec succès !');
-              navigation.popTo('Congratulation');
-            } catch (error) {
-              console.error('Erreur Firestore:', error);
+            // Checker si le client mobile est connecter
+            if (isConnected === true) {
+              // TODO : Push to firebase
+              try {
+                await firestore().collection('prospections').add({
+                  name: name,
+                  company: companyName,
+                  engagement_level: engagementLevel,
+                  duration: durationOfEngagement,
+                  createdAt: firestore.FieldValue.serverTimestamp(),
+                });
+                // TODO : Redirection vers congrat
+                console.log('Document ajouté avec succès !');
+                navigation.popTo('Congratulation');
+              } catch (error) {
+                console.error('Erreur Firestore:', error);
+              }
+            } else {
+              // TODO : Navigate to NotConnected Screen
+              navigation.popTo('NotConnected');
             }
           }}>
           <Text style={styles.textPrimary}>Valider</Text>

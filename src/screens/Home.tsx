@@ -7,7 +7,7 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 // NativeStackScreenProps : permet de typer les propriétés (props) des écrans dans une application React Native avec TypeScript
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -20,7 +20,22 @@ import logo from '../assets/images/D2C-removebg-preview.png';
 import home_illustration from '../assets/images/home_illustration.png';
 // import logo from '../assets/images/DD.jpg';
 
+import NetInfo from '@react-native-community/netinfo';
+
 const Home = ({navigation}: HomeProps) => {
+  const [isConnected, setIsConnected] = useState(true);
+  // Check Connectivity
+  useEffect(() => {
+    const checkConnectivity = NetInfo.addEventListener(state => {
+      console.log('Connection type', state.type);
+      console.log('Is connected?', state.isConnected);
+      setIsConnected(Boolean(state.isConnected));
+    });
+
+    return () => {
+      checkConnectivity();
+    };
+  }, []);
   return (
     <>
       <StatusBar backgroundColor={'#34495e'} />
@@ -58,7 +73,11 @@ const Home = ({navigation}: HomeProps) => {
         <TouchableOpacity
           style={styles.primaryBtn}
           onPress={() => {
-            navigation.popTo('Dashboard');
+            if (isConnected === true) {
+              navigation.popTo('Dashboard');
+            } else {
+              navigation.popTo('NotConnected');
+            }
             // navigation.push('Dashboard');
             // navigation.navigate('Dashboard');
           }}>

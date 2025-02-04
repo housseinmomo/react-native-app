@@ -14,6 +14,7 @@ import Congratulation from './screens/Congratulation';
 import Dashboard from './screens/Dashboard';
 import {ActivityIndicator} from 'react-native';
 import Splashscreen from './screens/Splashscreen';
+import NotConnected from './screens/errors/NotConnected';
 // import SplashScreen from 'react-native-splash-screen';
 
 // On predefinie la liste des ecrans ainsi que leurs props en amont avec typescript
@@ -32,11 +33,16 @@ export type RootStackParamList = {
   };
   Congratulation: undefined;
   Dashboard: undefined;
+  NotConnected: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
+  // Connectivity State
+  const [isConnected, setIsConnected] = useState(null);
+
+  // Splashscreen Loading State
   const [isAppReady, setIsAppReady] = useState(false);
 
   if (isAppReady === false) {
@@ -129,6 +135,21 @@ const App = () => {
           component={Dashboard}
           options={{
             title: 'Gestion des prospections',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 16,
+              color: '#34495e',
+            },
+            headerTitleAlign: 'center',
+            animation: 'fade_from_bottom',
+            animationDuration: 400,
+          }}
+        />
+        <Stack.Screen
+          name="NotConnected"
+          component={NotConnected}
+          options={{
+            title: 'Probleme de connexion',
             headerTitleStyle: {
               fontWeight: 'bold',
               fontSize: 16,
