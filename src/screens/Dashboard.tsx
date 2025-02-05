@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,8 +12,8 @@ import {
   Alert,
   Platform,
   PermissionsAndroid,
-  BackHandler,
 } from 'react-native';
+
 import firestore, {getDocs} from '@react-native-firebase/firestore';
 import Modal from 'react-native-modal';
 // NativeStackScreenProps : permet de typer les propriétés (props) des écrans dans une application React Native avec TypeScript
@@ -36,7 +36,10 @@ const Dashboard = ({navigation}: DashboardProps) => {
   const [prospections, setProspections] = useState([]);
   const [nbProspects, setNbProspects] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Modal State
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isFilterModalIsVisible, setIsFilterModalIsVisible] = useState(false);
 
   // Update Process State
   const [prospectToUpdate, setProspectToUpdate] = useState({});
@@ -57,6 +60,9 @@ const Dashboard = ({navigation}: DashboardProps) => {
   // PDF
   const [pdfPath, setPdfPath] = useState('');
   const [isLoadingPdfFile, setIsLoadingPdfFile] = useState(false);
+
+  // CheckBox Filter State
+  // const [selectedOption, setSelectedOption] = useState(null);
 
   const searchProspections = async (text: string) => {
     setSearchText(text);
@@ -87,7 +93,7 @@ const Dashboard = ({navigation}: DashboardProps) => {
     }
   };
 
-  const companies = [
+  const compagnies = [
     {key: '1', value: 'Telecom'},
     {key: '2', value: 'DMP'},
     {key: '3', value: 'EDD'},
@@ -174,7 +180,7 @@ const Dashboard = ({navigation}: DashboardProps) => {
 
   return (
     <SafeAreaView style={{marginTop: 10, marginBottom: 80}}>
-      {/* TODO  */}
+      {/* Modal Edit  */}
       <Modal
         isVisible={isModalVisible}
         animationIn="bounceIn"
@@ -226,7 +232,7 @@ const Dashboard = ({navigation}: DashboardProps) => {
             <SelectList
               placeholder="compagnies"
               defaultOption={{
-                key: companies.indexOf(prospectToUpdate.company),
+                key: compagnies.indexOf(prospectToUpdate.company),
                 value: prospectToUpdate.company,
               }} // Définit l'option par défaut
               boxStyles={{width: 200}}
@@ -234,7 +240,7 @@ const Dashboard = ({navigation}: DashboardProps) => {
               setSelected={company => {
                 setNewCompany(company);
               }}
-              data={companies}
+              data={compagnies}
               save="value"
             />
             <View style={{marginBottom: 10}}></View>
@@ -341,6 +347,750 @@ const Dashboard = ({navigation}: DashboardProps) => {
           </View>
         </View>
       </Modal>
+
+      {/* Modal Filter  */}
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Modal
+          isVisible={isFilterModalIsVisible}
+          onSwipeComplete={() => setIsFilterModalIsVisible(false)}
+          animationIn="slideInUp" // Animation d'entrée
+          animationOut="slideOutDown" // Animation de sortie
+          swipeDirection="down" // Swipe vers le bas pour fermer
+          backdropOpacity={0.5} // Fond semi-transparent
+          onBackdropPress={() => setIsFilterModalIsVisible(false)} // Ferme en cliquant à l'extérieur
+          style={{
+            // justifyContent: 'flex-start', // Positionne en bas de l'écran
+            margin: 0, // Supprime les marges
+          }}>
+          {/* Container : Filter Modal */}
+          <View
+            style={{
+              backgroundColor: '#dfe6e9',
+              height: '100%',
+            }}>
+            <View
+              style={{
+                backgroundColor: 'white',
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                padding: 20,
+                // backgroundColor: 'red',
+                borderBottomColor: 'black',
+                borderWidth: 1,
+              }}>
+              <Text style={{fontSize: 22, fontWeight: 'bold'}}>
+                Filtrer les prospections
+              </Text>
+              <TouchableOpacity
+                onPress={() => setIsFilterModalIsVisible(false)}>
+                <Text style={{fontSize: 22, fontWeight: 'bold'}}>X</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  padding: 15,
+                  // backgroundColor: 'orange',
+                }}>
+                Critères de filtrage :
+              </Text>
+            </View>
+            <View>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  opacity: 0.8,
+                  color: '#636e72',
+                  padding: 15,
+                }}>
+                Compagnies
+                {/* {key: '1', value: 'Telecom'},
+    {key: '2', value: 'DMP'},
+    {key: '3', value: 'EDD'},
+    {key: '4', value: 'ONEAD'},
+    {key: '5', value: 'CNSS'},
+    {key: '6', value: 'LANA'},
+    {key: '7', value: 'MENFOP'}, */}
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  padding: 10,
+                  marginRight: 10,
+                  marginBottom: -20,
+                }}>
+                {/* TODO: Choix */}
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: '#34495e',
+                    borderRadius: 4,
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      marginLeft: 4,
+                    }}>
+                    Telecom
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    DMP
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    margin: 4,
+                    // backgroundColor: 'yellow',
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    ONEAD
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  padding: 10,
+                  marginRight: 10,
+                  marginBottom: -20,
+                }}>
+                {/* TODO: Choix */}
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    ONEAD
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                    marginBottom: -10,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    CNSS
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    margin: 4,
+                    // backgroundColor: 'yellow',
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    LANA
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  padding: 10,
+                  marginRight: 10,
+                  marginBottom: -20,
+                }}>
+                {/* TODO: Choix */}
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    MENFOP
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    CDC
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    margin: 4,
+                    // backgroundColor: 'yellow',
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    CAC
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            <View>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  opacity: 0.8,
+                  color: '#636e72',
+                  padding: 15,
+                }}>
+                Niveau d'engagement
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  padding: 10,
+                  marginRight: 10,
+                  marginBottom: -20,
+                }}>
+                {/* TODO: Choix */}
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    Bronze
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    Silver
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    margin: 4,
+                    // backgroundColor: 'yellow',
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    Gold
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  padding: 10,
+                  marginRight: 10,
+                  marginBottom: -20,
+                }}>
+                {/* TODO: Choix */}
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    Platinum
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    Diamond
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    margin: 4,
+                    // backgroundColor: 'yellow',
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    VIP
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  opacity: 0.8,
+                  padding: 15,
+                  color: '#636e72',
+                }}>
+                Durée d'engagement
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  padding: 10,
+                  marginRight: 10,
+                  marginBottom: -20,
+                }}>
+                {/* TODO: Choix */}
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    {/* {key: '1', value: '1 - 3 mois'}, */}
+                    {/* {key: '2', value: '3 - 6 mois'}, */}
+                    {/* {key: '3', value: '6 - 9 mois'}, */}
+                    {/* {key: '4', value: '12 - 15 mois'}, */}
+                    {/* {key: '5', value: '16 - 24 mois'}, */}1 - 3
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    3 - 6
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    margin: 4,
+                    // backgroundColor: 'yellow',
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    6 - 9
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  padding: 10,
+                  marginRight: 10,
+                  marginBottom: 10,
+                }}>
+                {/* TODO: Choix */}
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    12 - 15
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    // backgroundColor: 'yellow',
+                    margin: 4,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                    }}>
+                    <Text style={{textAlign: 'center'}}></Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    16 - 24
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 10,
+                    margin: 4,
+                    // backgroundColor: 'yellow',
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 50,
+                      backgroundColor: 'white',
+                      padding: 2,
+                      borderWidth: 0.5,
+                      borderColor: 'black',
+                      display: 'none',
+                    }}>
+                    {/* <Text style={{textAlign: 'center'}}></Text> */}
+                  </TouchableOpacity>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', marginLeft: 4}}>
+                    {/* Gold */}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                marginBottom: 10,
+              }}>
+              <TouchableOpacity
+                style={{
+                  height: 40,
+                  width: 140,
+                  padding: 8,
+                  borderRadius: 8,
+                  backgroundColor: 'white',
+                  borderWidth: 1,
+                  borderColor: 'black',
+                }}>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}>
+                  Retirer les filtres
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  height: 40,
+                  width: 140,
+                  padding: 8,
+                  borderRadius: 8,
+                  backgroundColor: 'white',
+                  borderWidth: 1,
+                  borderColor: 'black',
+                }}>
+                <Text style={{fontWeight: 'bold', textAlign: 'center'}}>
+                  Appliquer les filtres
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </View>
 
       {/* TODO  */}
 
@@ -561,9 +1311,14 @@ const Dashboard = ({navigation}: DashboardProps) => {
             borderWidth: 1,
             borderColor: '#34495e',
           }}
-          onPress={() =>
-            Alert.alert("Fonctionnalites en cours d'implementation")
-          }>
+          onPress={() => {
+            // TODO : Ouvrir le modal pour les filtres
+
+            setTimeout(() => {
+              setIsFilterModalIsVisible(!isFilterModalIsVisible);
+              console.log(isFilterModalIsVisible);
+            }, 1500);
+          }}>
           <Text
             style={{textAlign: 'center', color: '#34495e', fontWeight: 'bold'}}>
             Filtrer les prospects

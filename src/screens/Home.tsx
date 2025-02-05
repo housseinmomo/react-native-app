@@ -76,7 +76,8 @@ const Home = ({navigation}: HomeProps) => {
             if (isConnected === true) {
               navigation.popTo('Dashboard');
             } else {
-              navigation.popTo('NotConnected');
+              navigation.popTo('Dashboard');
+              // navigation.popTo('NotConnected');
             }
             // navigation.push('Dashboard');
             // navigation.navigate('Dashboard');
