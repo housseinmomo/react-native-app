@@ -5,7 +5,6 @@ import {
   TextInput,
   SafeAreaView,
   Image,
-  Button,
   Alert,
   TouchableOpacity,
 } from 'react-native';
@@ -14,6 +13,7 @@ import {SelectList} from 'react-native-dropdown-select-list';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../App';
+import Modal from 'react-native-modal';
 
 type RegisterProps = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
@@ -26,16 +26,23 @@ const data = [
   {key: '6', value: 'LANA'},
   {key: '7', value: 'MENFOP'},
 ];
-import logo from '../assets/images/D2C-removebg-preview.png';
+import warning from '../assets/images/warning.png';
 import illustration from '../assets/images/register_illustration.png';
 
 const Register = ({navigation}: RegisterProps) => {
   const [name, setName] = useState('');
   const [company, setCampany] = useState('');
   const [errors, setErrors] = useState('');
+  const [isWarningModalIsVisible, setIsWarningModalIsVisible] = useState(false);
+
+  useEffect(() => {
+    console.log();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Modal Error */}
+
       <View style={{elevation: 3, shadowOffset: {width: 1, height: 1}}}>
         {/* <Image
           style={{
@@ -61,7 +68,7 @@ const Register = ({navigation}: RegisterProps) => {
         />
       </View>
       {/* <Text style={styles.headingText}>Saisir les informations ci-dessous</Text> */}
-      {errors && <Text style={styles.errorText}>{errors}</Text>}
+      {/* {errors && <Text style={styles.errorText}>{errors}</Text>} */}
       {/* {errors &&
         Alert.alert('Ce champ est obligatoire', errors, [
           {text: "C'est compris", style: 'cancel'},
@@ -112,14 +119,17 @@ const Register = ({navigation}: RegisterProps) => {
             setErrors(
               "Votre nom et ainsi que celui de votre compagnie sont necessaires avant de passer à l'etape suivante",
             );
+            setIsWarningModalIsVisible(true);
           } else if (name === '') {
             setErrors(
               "Veuillez entrer votre nom avant de passer à l'etape suivante",
             );
+            setIsWarningModalIsVisible(true);
           } else if (company === '') {
             setErrors(
               "Veuillez selectionner le nom de votre compagnie avant de passer à l'etape suivante",
             );
+            setIsWarningModalIsVisible(true);
           } else {
             Alert.alert(
               'Confirmer votre identité',
@@ -141,6 +151,69 @@ const Register = ({navigation}: RegisterProps) => {
         }}>
         <Text style={styles.btnText}>Enregistrement</Text>
       </TouchableOpacity>
+      {/* <View style={{flex: 1}}>
+        <Modal
+          isVisible={isWarningModalIsVisible}
+          onSwipeComplete={() => setIsWarningModalIsVisible(false)}
+          animationIn="slideInUp" // Animation d'entrée
+          animationOut="slideOutDown" // Animation de sortie
+          swipeDirection="down" // Swipe vers le bas pour fermer
+          backdropOpacity={0.5} // Fond semi-transparent
+          onBackdropPress={() => {
+            setIsWarningModalIsVisible(false);
+          }} // Ferme en cliquant à l'extérieur
+          style={{
+            justifyContent: 'flex-end', // Positionne en bas de l'écran
+            marginLeft: 5, // Supprime les marges
+            marginRight: 5, // Supprime les marges
+            marginBottom: 0,
+          }}>
+          <View
+            style={{
+              // backgroundColor: '#dfe6e9',
+              backgroundColor: 'white',
+              borderWidth: 2,
+              borderColor: '#34495e',
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              height: '25%',
+              // padding: 10,
+            }}>
+            <View style={{flex: 1, alignItems: 'center'}}>
+              <View
+                style={{
+                  backgroundColor: '#34495e',
+                  height: 50,
+                  width: 50,
+                  borderRadius: 50,
+                  marginTop: -28,
+                  borderWidth: 4,
+                  borderColor: '#34495e',
+                  borderStyle: 'dashed',
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  source={warning}
+                  style={{height: 25, width: 25, borderRadius: 50}}
+                />
+              </View>
+            </View>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#34495e',
+                fontWeight: 'bold',
+                textAlign: 'center',
+                lineHeight: 20,
+                padding: 50,
+              }}>
+              {errors}
+            </Text>
+          </View>
+        </Modal>
+      </View> */}
     </SafeAreaView>
   );
 };

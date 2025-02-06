@@ -12,6 +12,7 @@ import {
   Alert,
   Platform,
   PermissionsAndroid,
+  Dimensions,
 } from 'react-native';
 
 import firestore, {getDocs} from '@react-native-firebase/firestore';
@@ -31,6 +32,7 @@ import errorImage from '../assets/images/errors/nodata.png';
 import {SelectList} from 'react-native-dropdown-select-list';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Share from 'react-native-share';
+import MyPlotly from '../components/Charts/MyPlotly';
 
 const Dashboard = ({navigation}: DashboardProps) => {
   const [prospections, setProspections] = useState([]);
@@ -40,6 +42,7 @@ const Dashboard = ({navigation}: DashboardProps) => {
   // Modal State
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isFilterModalIsVisible, setIsFilterModalIsVisible] = useState(false);
+  const [isChartModalIsVisible, setIsChartModalIsVisible] = useState(false);
 
   // Update Process State
   const [prospectToUpdate, setProspectToUpdate] = useState({});
@@ -55,7 +58,7 @@ const Dashboard = ({navigation}: DashboardProps) => {
   const [isLoadingFilteredData, setIsLoadingFilteredData] = useState(false);
 
   // Pagination State
-  const [lastDocument, setLastDocument] = useState();
+  // const [lastDocument, setLastDocument] = useState();
 
   // PDF
   const [pdfPath, setPdfPath] = useState('');
@@ -1092,6 +1095,35 @@ const Dashboard = ({navigation}: DashboardProps) => {
         </Modal>
       </View>
 
+      {/* Modal Chart  */}
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Modal
+          isVisible={isChartModalIsVisible}
+          onSwipeComplete={() => setIsChartModalIsVisible(false)}
+          animationIn="slideInUp" // Animation d'entrée
+          animationOut="slideOutDown" // Animation de sortie
+          swipeDirection="down" // Swipe vers le bas pour fermer
+          backdropOpacity={0.5} // Fond semi-transparent
+          onBackdropPress={() => setIsChartModalIsVisible(false)} // Ferme en cliquant à l'extérieur
+          style={{
+            // justifyContent: 'flex-start', // Positionne en bas de l'écran
+            margin: 0, // Supprime les marges
+          }}>
+          {/* Container : MyCharts */}
+          <View style={{backgroundColor: '#dfe6e9', height: '100%'}}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text>Charts</Text>
+              {/* <MyPlotly /> */}
+            </View>
+          </View>
+        </Modal>
+      </View>
+
       {/* TODO  */}
 
       <StatusBar backgroundColor={'#34495e'} />
@@ -1314,10 +1346,8 @@ const Dashboard = ({navigation}: DashboardProps) => {
           onPress={() => {
             // TODO : Ouvrir le modal pour les filtres
 
-            setTimeout(() => {
-              setIsFilterModalIsVisible(!isFilterModalIsVisible);
-              console.log(isFilterModalIsVisible);
-            }, 1500);
+            setIsFilterModalIsVisible(!isFilterModalIsVisible);
+            console.log(isFilterModalIsVisible);
           }}>
           <Text
             style={{textAlign: 'center', color: '#34495e', fontWeight: 'bold'}}>
@@ -1332,9 +1362,7 @@ const Dashboard = ({navigation}: DashboardProps) => {
             padding: 8,
             borderRadius: 8,
           }}
-          onPress={() =>
-            Alert.alert("Fonctionnalite en cours d'implementation")
-          }>
+          onPress={() => setIsChartModalIsVisible(true)}>
           <Text style={{color: 'white', textAlign: 'center'}}>
             Accéder aux charts
           </Text>
